@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  rclone:
+    image: rclone/rclone
+    command: |-
+      --config /rclone.conf mount oracle-s3:bucket-shared /mount --allow-other --allow-non-empty
+    deploy:
+      placement:
+        max_replicas_per_node: 1
+    volumes:
+      - /home/ubuntu/rclone/rclone.conf:/rclone.conf
+      - /mnt/shared:/mount:shared
+      - /etc/passwd:/etc/passwd:ro
+      - /etc/group:/etc/group:ro
+    privileged: true
+    devices:
+      - /dev/fuse
+    cap_add:
+      - SYS_ADMIN 
+    security_opt:
+      - apparmor:unconfined 
+    secrets:
+      - rclone_config_file
+
+secrets:
+  rclone_config_file:
+    external: true

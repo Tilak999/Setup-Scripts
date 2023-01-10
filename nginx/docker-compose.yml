@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  nginx-proxy:
+    image: nginx:latest
+    volumes:
+      - "/mnt/shared/certs:/certs"
+      - "/mnt/shared/nginx-conf/:/etc/nginx/conf.d/"
+    ports:
+      - "443:443"
